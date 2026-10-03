@@ -1,0 +1,23 @@
+{
+  "app_title": "Small AI",
+  "online": "Mtandaoni",
+  "offline": "Nje ya mtandao",
+  "choose_sector": "Chagua sekta",
+  "sector_health": "Afya",
+  "sector_agriculture": "Kilimo",
+  "sector_tourism": "Utalii",
+  "input_label": "Eleza hali ilivyo",
+  "input_placeholder": "Andika hapa, au tumia sauti kwenye kibodi ya simu...",
+  "submit": "Angalia",
+  "checking": "Inaangalia...",
+  "result_title": "Pendekezo",
+  "ask_person_title": "Sina uhakika. Muulize mtu.",
+  "confidence": "Uhakika: {pct}%",
+  "sources": "Kwa msingi wa",
+  "human_in_loop": "Chombo hiki kinashauri. Wewe ndiye unayeamua.",
+  "queued": "Rekodi {n} zimehifadhiwa kwenye simu hii, zikisubiri mtandao",
+  "sync_now": "Tuma sasa",
+  "saved_offline": "Hakuna mtandao. Imehifadhiwa kwenye simu hii na itatumwa baadaye.",
+  "error": "Kuna hitilafu. Jaribu tena au muulize mtu.",
+  "language": "Lugha"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Small AI for Development",
+  "short_name": "Small AI",
+  "description": "Offline-first Small AI tool. Replace with your sector tool's name.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f5f1",
+  "theme_color": "#0f4c5c",
+  "icons": []
+}

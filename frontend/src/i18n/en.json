@@ -1,0 +1,23 @@
+{
+  "app_title": "Small AI",
+  "online": "Online",
+  "offline": "Offline",
+  "choose_sector": "Choose a sector",
+  "sector_health": "Health",
+  "sector_agriculture": "Agriculture",
+  "sector_tourism": "Tourism",
+  "input_label": "Describe the situation",
+  "input_placeholder": "Type here, or dictate with your phone keyboard...",
+  "submit": "Check",
+  "checking": "Checking...",
+  "result_title": "Suggestion",
+  "ask_person_title": "Not sure. Ask a person.",
+  "confidence": "Confidence: {pct}%",
+  "sources": "Based on",
+  "human_in_loop": "This tool informs. You decide.",
+  "queued": "{n} record(s) saved on this phone, waiting for signal",
+  "sync_now": "Send now",
+  "saved_offline": "No signal. Saved on this phone and will send later.",
+  "error": "Something went wrong. Try again or ask a person.",
+  "language": "Language"
+}
