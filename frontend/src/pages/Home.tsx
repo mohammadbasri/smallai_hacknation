@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState, type FormEvent } from "react";
 import { api, type InferenceResponse, type Sector } from "../api/client";
 import { ResultCard } from "../components/ResultCard";
-import { SectorPicker } from "../components/SectorPicker";
 import { useOnline } from "../hooks/useOnline";
+import { OfflineModel } from "../components/OfflineModel";
 import { LangContext, useT } from "../i18n";
+import { askLocal, llmReady } from "../lib/llm";
 import { enqueue, flush, getClientId, pending } from "../lib/offlineQueue";
 
 export function Home() {
@@ -11,11 +12,12 @@ export function Home() {
   const { lang } = useContext(LangContext);
   const online = useOnline();
 
-  const [sector, setSector] = useState<Sector>("agriculture");
+  const sector: Sector = "tourism";
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<InferenceResponse | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [, setModelTick] = useState(0);
   const [queued, setQueued] = useState(pending().length);
 
   // When signal returns, forward whatever was saved on the phone.
@@ -33,13 +35,15 @@ export function Home() {
     setNotice(null);
     setResult(null);
     try {
-      // TODO: for the hackathon, run the small model ON DEVICE here (ONNX Runtime Web / TF.js / WebLLM)
-      // and only call the API for sync. The server call below is the boilerplate placeholder.
-      const res = await api.infer({ sector, text, language: lang, client_id: getClientId() });
+      // On-device Qwen when loaded (works offline); otherwise fall back to the server.
+      const res = llmReady()
+        ? await askLocal(sector, text, lang)
+        : await api.infer({ sector, text, language: lang, client_id: getClientId() });
       setResult(res);
       enqueue(sector, { text, decision: res.decision, label: res.label, confidence: res.confidence }, lang);
       setQueued(pending().length);
-    } catch {
+    } catch (err) {
+      console.error("Inference failed", err);
       enqueue(sector, { text }, lang);
       setQueued(pending().length);
       setNotice(online ? t("error") : t("saved_offline"));
@@ -59,9 +63,9 @@ export function Home() {
 
   return (
     <>
+      <OfflineModel online={online} onReady={() => setModelTick((n) => n + 1)} />
       <form className="card" onSubmit={onSubmit}>
-        <SectorPicker value={sector} onChange={setSector} />
-        <div style={{ marginTop: 16 }}>
+        <div>
           <label htmlFor="input">{t("input_label")}</label>
           <textarea id="input" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("input_placeholder")} />
         </div>

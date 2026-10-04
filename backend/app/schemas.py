@@ -7,8 +7,6 @@ from pydantic import BaseModel, Field
 
 
 class Sector(str, Enum):
-    health = "health"
-    agriculture = "agriculture"
     tourism = "tourism"
 
 
@@ -59,7 +57,7 @@ class SyncResponse(BaseModel):
 
 class Dataset(BaseModel):
     name: str
-    sector: Literal["common", "health", "agriculture", "tourism"]
+    sector: Literal["common", "tourism"]
     what_it_is: str
     why_it_matters: str
     license: str = "check terms"

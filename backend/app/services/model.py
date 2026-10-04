@@ -32,16 +32,6 @@ class SmallModel(Protocol):
 # ---------------------------------------------------------------------------
 
 _SECTOR_LABELS: dict[Sector, dict[str, list[str]]] = {
-    Sector.health: {
-        "book_follow_up": ["follow", "appointment", "return", "rudi"],
-        "refer_to_clinic": ["fever", "homa", "pain", "maumivu", "bleeding"],
-        "medication_reminder": ["medicine", "dawa", "pill", "dose"],
-    },
-    Sector.agriculture: {
-        "coffee_leaf_rust": ["rust", "orange", "spots", "kutu", "majani"],
-        "coffee_berry_disease": ["berry", "black", "fruit", "matunda"],
-        "price_check": ["price", "bei", "sell", "buyer", "mnunuzi"],
-    },
     Sector.tourism: {
         "booking_request": ["book", "visit", "tour", "ziara", "come"],
         "price_enquiry": ["price", "cost", "bei", "how much"],

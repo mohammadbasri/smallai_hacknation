@@ -2,10 +2,6 @@
   "app_title": "Small AI",
   "online": "Online",
   "offline": "Offline",
-  "choose_sector": "Choose a sector",
-  "sector_health": "Health",
-  "sector_agriculture": "Agriculture",
-  "sector_tourism": "Tourism",
   "input_label": "Describe the situation",
   "input_placeholder": "Type here, or dictate with your phone keyboard...",
   "submit": "Check",
@@ -19,5 +15,10 @@
   "sync_now": "Send now",
   "saved_offline": "No signal. Saved on this phone and will send later.",
   "error": "Something went wrong. Try again or ask a person.",
-  "language": "Language"
+  "language": "Language",
+  "model_prompt": "Download the offline model once (about 400 MB, use Wi-Fi) to get answers without signal.",
+  "model_download": "Download offline model",
+  "model_downloading": "Downloading offline model: {pct}%",
+  "model_ready": "Offline model ready on this phone.",
+  "model_unsupported": "This browser cannot run the offline model. Answers need signal."
 }

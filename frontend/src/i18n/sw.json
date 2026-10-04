@@ -2,10 +2,6 @@
   "app_title": "Small AI",
   "online": "Mtandaoni",
   "offline": "Nje ya mtandao",
-  "choose_sector": "Chagua sekta",
-  "sector_health": "Afya",
-  "sector_agriculture": "Kilimo",
-  "sector_tourism": "Utalii",
   "input_label": "Eleza hali ilivyo",
   "input_placeholder": "Andika hapa, au tumia sauti kwenye kibodi ya simu...",
   "submit": "Angalia",
@@ -19,5 +15,10 @@
   "sync_now": "Tuma sasa",
   "saved_offline": "Hakuna mtandao. Imehifadhiwa kwenye simu hii na itatumwa baadaye.",
   "error": "Kuna hitilafu. Jaribu tena au muulize mtu.",
-  "language": "Lugha"
+  "language": "Lugha",
+  "model_prompt": "Pakua modeli ya nje ya mtandao mara moja (takriban MB 400, tumia Wi-Fi) ili upate majibu bila mtandao.",
+  "model_download": "Pakua modeli ya nje ya mtandao",
+  "model_downloading": "Inapakua modeli: {pct}%",
+  "model_ready": "Modeli ya nje ya mtandao iko tayari kwenye simu hii.",
+  "model_unsupported": "Kivinjari hiki hakiwezi kuendesha modeli ya nje ya mtandao. Majibu yanahitaji mtandao."
 }

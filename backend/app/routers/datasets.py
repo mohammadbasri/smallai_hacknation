@@ -23,21 +23,6 @@ DATASETS: list[Dataset] = [
         coverage_gaps="Formal register; informal chat and code-switching are weaker.",
     ),
     Dataset(
-        name="PlantVillage",
-        sector="agriculture",
-        what_it_is="~54,000 leaf images, 38 disease classes.",
-        why_it_matters="Largest open crop disease image set.",
-        license="CC0 / CC-BY-SA",
-        coverage_gaps="Studio images on plain backgrounds; poor transfer to real field photos.",
-    ),
-    Dataset(
-        name="Service Delivery Indicators (World Bank)",
-        sector="health",
-        what_it_is="Facility surveys: absenteeism, staffing, equipment, drug availability.",
-        why_it_matters="Measures the access problem the tool addresses.",
-        coverage_gaps="Country/year coverage is partial; facility-level, not patient-level.",
-    ),
-    Dataset(
         name="MASSIVE (Amazon)",
         sector="tourism",
         what_it_is="~1M short utterances in 51 languages labelled by intent.",

@@ -29,7 +29,7 @@ frontend/           Vite + React + TS
   src/api/client.ts typed API client
   src/i18n/         en.json, sw.json, tiny i18n hook
   src/lib/          offlineQueue.ts
-  src/components/   SectorPicker, ResultCard, OnlineBadge, LanguageSwitcher
+  src/components/   ResultCard, OnlineBadge, LanguageSwitcher
   src/pages/Home.tsx
   public/sw.js      offline app-shell service worker
 docs/CHALLENGE_BRIEF.md   rules, judging weights, deliverables, datasets from the PDF
@@ -98,12 +98,12 @@ docker compose up --build
 ```bash
 curl -X POST http://localhost:8000/api/inference \
   -H "Content-Type: application/json" \
-  -d '{"sector":"agriculture","text":"orange rust spots on majani","language":"sw"}'
-# -> decision: "answer", label: "coffee_leaf_rust", confidence ~0.9
+  -d '{"sector":"tourism","text":"how much is the tour, I want to book","language":"en"}'
+# -> decision: "answer", label: "booking_request" or "price_enquiry"
 
 curl -X POST http://localhost:8000/api/inference \
   -H "Content-Type: application/json" \
-  -d '{"sector":"health","text":"something unclear","language":"sw"}'
+  -d '{"sector":"tourism","text":"something unclear","language":"sw"}'
 # -> decision: "ask_a_person", explanation in Swahili
 ```
 

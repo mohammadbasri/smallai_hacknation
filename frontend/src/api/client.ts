@@ -1,6 +1,6 @@
 /** Thin typed client for the FastAPI backend. Mirrors backend/app/schemas.py. */
 
-export type Sector = "health" | "agriculture" | "tourism";
+export type Sector = "tourism";
 export type Decision = "answer" | "ask_a_person";
 
 export interface InferenceRequest {

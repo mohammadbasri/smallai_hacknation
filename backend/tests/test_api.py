@@ -14,19 +14,19 @@ def test_health():
 def test_inference_confident_answer():
     r = client.post(
         "/api/inference",
-        json={"sector": "agriculture", "text": "orange rust spots on majani", "language": "sw"},
+        json={"sector": "tourism", "text": "I want to book a tour, how much", "language": "en"},
     )
     assert r.status_code == 200
     body = r.json()
     assert body["decision"] == "answer"
-    assert body["label"] == "coffee_leaf_rust"
+    assert body["label"] in {"booking_request", "price_enquiry"}
     assert body["confidence"] >= 0.65
 
 
 def test_inference_defers_to_human_when_unsure():
     r = client.post(
         "/api/inference",
-        json={"sector": "health", "text": "zzzz nothing matches", "language": "sw"},
+        json={"sector": "tourism", "text": "zzzz nothing matches", "language": "sw"},
     )
     assert r.status_code == 200
     body = r.json()
@@ -56,7 +56,7 @@ def test_sync_is_idempotent():
 
 
 def test_datasets_filter_includes_common():
-    r = client.get("/api/datasets", params={"sector": "agriculture"})
+    r = client.get("/api/datasets", params={"sector": "tourism"})
     sectors = {d["sector"] for d in r.json()}
-    assert sectors <= {"agriculture", "common"}
+    assert sectors <= {"tourism", "common"}
     assert "common" in sectors
