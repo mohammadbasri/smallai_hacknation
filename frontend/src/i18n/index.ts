@@ -1,5 +1,5 @@
-/** Tiny dependency-free i18n. Add a language by adding a JSON file and registering it here.
- *  The brief requires at least one interaction in a named local language. Swahili (sw) is a placeholder. */
+/** Tiny dependency-free i18n for the OPERATOR side (Noor). Kiswahili is the demo language, English the fallback.
+ *  Visitor-facing text is not here: it lives in shared/templates/replies.json (en/fr/sw). */
 import { createContext, useContext } from "react";
 import en from "./en.json";
 import sw from "./sw.json";
@@ -15,19 +15,23 @@ export const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => voi
   setLang: () => {},
 });
 
+export function useLang(): Lang {
+  return useContext(LangContext).lang;
+}
+
 export function useT() {
   const { lang } = useContext(LangContext);
   const dict = DICTS[lang];
   return (key: keyof Dict, vars?: Record<string, string | number>) => {
     let s: string = dict[key] ?? en[key] ?? key;
-    if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
+    if (vars) for (const [k, v] of Object.entries(vars)) s = s.split(`{${k}}`).join(String(v));
     return s;
   };
 }
 
 export function loadLang(): Lang {
   try {
-    const saved = localStorage.getItem("lang");
+    const saved = localStorage.getItem("karibu.lang");
     if (saved === "en" || saved === "sw") return saved;
   } catch {
     /* storage unavailable */
@@ -37,7 +41,7 @@ export function loadLang(): Lang {
 
 export function saveLang(l: Lang) {
   try {
-    localStorage.setItem("lang", l);
+    localStorage.setItem("karibu.lang", l);
   } catch {
     /* ignore */
   }

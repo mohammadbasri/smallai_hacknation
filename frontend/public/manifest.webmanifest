@@ -1,10 +1,11 @@
 {
-  "name": "Small AI for Development",
-  "short_name": "Small AI",
-  "description": "Offline-first Small AI tool. Replace with your sector tool's name.",
+  "name": "Karibu · Small AI for farm tours",
+  "short_name": "Karibu",
+  "description": "Reads visitor messages in English, French or Kiswahili, tells Noor what they want, drafts a reply she approves, and turns feedback into 'keep doing / fix next'. Works offline.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f5f1",
-  "theme_color": "#0f4c5c",
+  "theme_color": "#6b3e26",
+  "lang": "sw",
   "icons": []
 }

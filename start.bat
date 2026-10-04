@@ -2,7 +2,7 @@
 setlocal EnableExtensions
 cd /d "%~dp0"
 echo.
-echo === Small AI for Development (Windows) ===
+echo === Karibu - Small AI for farm tours (Windows) ===
 echo.
 
 rem Usage:  start.bat            install anything missing, then run both servers

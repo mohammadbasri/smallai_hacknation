@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "languages": ["en", "fr", "sw"],
+  "note": "The complete set of things the tool may say to a visitor. Slots in {braces} come from the operator profile. Noor approves every message before it is sent.",
+  "intents": {
+    "price": {
+      "en": "Hello! A visit to {farm_name} costs {price_adult} {currency} per adult and {price_child} {currency} per child. It includes {includes}. You can pay by mobile money or cash on arrival.",
+      "fr": "Bonjour ! La visite de {farm_name} coûte {price_adult} {currency} par adulte et {price_child} {currency} par enfant. Elle comprend {includes}. Paiement par mobile money ou en espèces à l'arrivée.",
+      "sw": "Habari! Ziara ya {farm_name} ni {price_adult} {currency} kwa mtu mzima na {price_child} {currency} kwa mtoto. Inajumuisha {includes}. Unaweza kulipa kwa pesa za simu au taslimu ukifika."
+    },
+    "booking": {
+      "en": "Thank you for your booking request! Tours run {open_days}, starting at {start_times}, for up to {max_party} people. Please confirm your date, start time and number of people, and {operator_name} will reserve your place.",
+      "fr": "Merci pour votre demande de réservation ! Les visites ont lieu {open_days}, départ à {start_times}, pour {max_party} personnes maximum. Merci de confirmer la date, l'heure et le nombre de personnes ; {operator_name} réservera votre place.",
+      "sw": "Asante kwa ombi lako la kuweka nafasi! Ziara hufanyika {open_days}, kuanzia {start_times}, kwa hadi watu {max_party}. Tafadhali thibitisha tarehe, saa na idadi ya watu, na {operator_name} atakuwekea nafasi."
+    },
+    "availability": {
+      "en": "We welcome visitors {open_days}, with tours starting at {start_times}. Tell us your preferred date and group size and we will confirm availability.",
+      "fr": "Nous accueillons les visiteurs {open_days}, avec des départs à {start_times}. Indiquez-nous la date souhaitée et la taille du groupe et nous confirmerons la disponibilité.",
+      "sw": "Tunapokea wageni {open_days}, ziara zikianza {start_times}. Tuambie tarehe unayopendelea na idadi ya watu, nasi tutathibitisha nafasi."
+    },
+    "directions": {
+      "en": "We are at {location_hint}. {directions_hint}. Message or call {phone} when you reach the junction and someone will come to meet you.",
+      "fr": "Nous sommes à {location_hint}. {directions_hint}. Envoyez un message ou appelez le {phone} en arrivant au carrefour et quelqu'un viendra vous chercher.",
+      "sw": "Tuko {location_hint}. {directions_hint}. Tuma ujumbe au piga {phone} ukifika njia panda na mtu atakuja kukupokea."
+    },
+    "whats_included": {
+      "en": "The visit lasts about {duration} and includes {includes}. Please wear closed shoes and bring a hat and water. Roasted beans are available to buy at the end.",
+      "fr": "La visite dure environ {duration} et comprend {includes}. Prévoyez des chaussures fermées, un chapeau et de l'eau. Du café torréfié est en vente à la fin.",
+      "sw": "Ziara huchukua kama {duration} na inajumuisha {includes}. Tafadhali vaa viatu vilivyofungwa na ubebe kofia na maji. Kahawa iliyokaangwa inauzwa mwishoni."
+    },
+    "dietary_accessibility": {
+      "en": "Thank you for letting us know. {dietary_note} Please tell us about any allergies or mobility needs before your visit so {operator_name} can prepare, and she will confirm what is possible.",
+      "fr": "Merci de nous l'avoir signalé. {dietary_note} Indiquez-nous toute allergie ou besoin de mobilité avant la visite afin que {operator_name} puisse s'organiser ; elle vous confirmera ce qui est possible.",
+      "sw": "Asante kwa kutuambia. {dietary_note} Tafadhali tuambie kuhusu mzio wowote au mahitaji ya kutembea kabla ya ziara ili {operator_name} ajiandae, naye atathibitisha kinachowezekana."
+    },
+    "cancel_change": {
+      "en": "No problem, and thank you for telling us. Please send the new date and time you would like, or confirm that you wish to cancel, and {operator_name} will update your booking.",
+      "fr": "Pas de problème, merci de nous avoir prévenus. Envoyez-nous la nouvelle date et l'heure souhaitées, ou confirmez l'annulation, et {operator_name} mettra votre réservation à jour.",
+      "sw": "Hakuna shida, asante kwa kutujulisha. Tafadhali tuma tarehe na saa mpya unayotaka, au thibitisha kuwa unafuta, na {operator_name} atasasisha nafasi yako."
+    },
+    "thanks_feedback": {
+      "en": "Thank you so much for visiting {farm_name}! Your words mean a lot to the whole family. If you have a minute, reply with one thing you loved and one thing we could do better. Karibu tena!",
+      "fr": "Merci beaucoup d'avoir visité {farm_name} ! Vos mots comptent beaucoup pour toute la famille. Si vous avez une minute, répondez avec une chose que vous avez adorée et une chose que nous pourrions améliorer. Karibu tena !",
+      "sw": "Asante sana kwa kutembelea {farm_name}! Maneno yako yana maana kubwa kwa familia nzima. Ukipata dakika moja, jibu kwa jambo moja ulilopenda na jambo moja tunaloweza kuboresha. Karibu tena!"
+    }
+  },
+  "special": {
+    "holding": {
+      "en": "Thank you for your message. {operator_name} will reply to you personally soon.",
+      "fr": "Merci pour votre message. {operator_name} vous répondra personnellement très bientôt.",
+      "sw": "Asante kwa ujumbe wako. {operator_name} atakujibu mwenyewe hivi karibuni."
+    },
+    "unsupported_language": {
+      "en": "Thank you for your message. We can reply in English, French or Kiswahili. Could you write to us in one of those languages? {operator_name} will answer soon.",
+      "fr": "Merci pour votre message. Nous pouvons répondre en anglais, en français ou en kiswahili. Pourriez-vous nous écrire dans l'une de ces langues ? {operator_name} vous répondra bientôt.",
+      "sw": "Asante kwa ujumbe wako. Tunaweza kujibu kwa Kiingereza, Kifaransa au Kiswahili. Tafadhali tuandikie kwa mojawapo ya lugha hizo. {operator_name} atajibu hivi karibuni."
+    },
+    "booking_confirmed": {
+      "en": "Your visit to {farm_name} is confirmed: {date} at {time} for {party_size} people. Meeting point: {location_hint}. Message {phone} if anything changes. We look forward to welcoming you!",
+      "fr": "Votre visite de {farm_name} est confirmée : le {date} à {time} pour {party_size} personnes. Point de rendez-vous : {location_hint}. Écrivez au {phone} en cas de changement. Au plaisir de vous accueillir !",
+      "sw": "Ziara yako ya {farm_name} imethibitishwa: {date} saa {time} kwa watu {party_size}. Mahali pa kukutana: {location_hint}. Tuma ujumbe {phone} kukiwa na mabadiliko. Tunatarajia kukukaribisha!"
+    },
+    "booking_reminder": {
+      "en": "A reminder from {farm_name}: we expect you tomorrow, {date} at {time}, {party_size} people. {directions_hint}. See you soon!",
+      "fr": "Petit rappel de {farm_name} : nous vous attendons demain, le {date} à {time}, {party_size} personnes. {directions_hint}. À très bientôt !",
+      "sw": "Kikumbusho kutoka {farm_name}: tunakutarajia kesho, {date} saa {time}, watu {party_size}. {directions_hint}. Tutaonana!"
+    },
+    "booking_cancelled": {
+      "en": "Your booking at {farm_name} for {date} has been cancelled as requested. You are welcome back any time.",
+      "fr": "Votre réservation à {farm_name} pour le {date} a été annulée comme demandé. Vous êtes les bienvenus à tout moment.",
+      "sw": "Nafasi yako {farm_name} ya tarehe {date} imefutwa kama ulivyoomba. Unakaribishwa tena wakati wowote."
+    },
+    "followup": {
+      "en": "Hello from {farm_name}! Thank you again for visiting. If you have a minute, reply with one thing you loved and one thing we could do better. It helps us improve. Karibu tena!",
+      "fr": "Bonjour de la part de {farm_name} ! Merci encore pour votre visite. Si vous avez une minute, répondez avec une chose que vous avez adorée et une chose à améliorer. Cela nous aide beaucoup. Karibu tena !",
+      "sw": "Habari kutoka {farm_name}! Asante tena kwa kututembelea. Ukipata dakika moja, jibu kwa jambo moja ulilopenda na jambo moja tunaloweza kuboresha. Inatusaidia kuimarika. Karibu tena!"
+    }
+  }
+}

@@ -1,119 +1,127 @@
-# Small AI for Development · Hackathon Boilerplate
+# Karibu · Small AI for a farm-tour operator
 
-React (Vite + TypeScript) frontend and Python (FastAPI) backend, shaped by the rules in the
-Hack-Nation × World Bank *Small AI for Development* concept note (`file.pdf`, summarised in
-[docs/CHALLENGE_BRIEF.md](docs/CHALLENGE_BRIEF.md)).
+**Hack-Nation × World Bank Group · Small AI for Development Hackathon 2026 · Sector: Tourism (Annex C)**
 
-What the boilerplate already does for you:
+> Because of this tool, **Noor** will **understand and answer a visitor's enquiry in the visitor's language, from the phone she already has, the same day** that she would otherwise **answer late, through a guide, or not at all**; we know because the brief's Tourism scenario describes visitors who need a local guide to translate and an operator who never learns what worked, the GSMA Mobile Gender Gap Report shows the device such women own is most often a basic phone, and the World Bank's work with small operators in Jordan found the binding constraint was the missing digital listing and the skills to manage one.
 
-| Brief requirement | Where it lives |
-| --- | --- |
-| Core feature works offline | `frontend/public/sw.js` caches the app shell; `src/lib/offlineQueue.ts` is store-and-forward |
-| Local-language interaction (name the language) | `frontend/src/i18n/` (English + Swahili placeholder), `backend/app/services/guardrails.py` fallback messages |
-| Human in the loop, no guessing | `backend/app/services/guardrails.py` returns `ask_a_person` below `CONFIDENCE_THRESHOLD`; `ResultCard.tsx` always shows confidence |
-| Fixed list of answers | `backend/app/services/model.py` labels per sector, exposed at `GET /api/inference/labels/{sector}` |
-| Cite datasets and their gaps | `backend/app/routers/datasets.py` (`coverage_gaps` is a required field) |
-| Small, side-loadable model files | `MODEL_DIR` setting; swap `StubModel` for a quantized ONNX / TFLite / llama.cpp model |
+Noor farms coffee in the Ondera highlands and hosts six or seven visitors a month by word of mouth. They write in
+English or French; she reads Kiswahili. She has a basic phone for calls and SMS, and her daughter's smartphone at
+weekends. Karibu reads the message for her, tells her in Kiswahili what the visitor wants, drafts a reply from a fixed
+template that she approves, keeps her bookings, and turns visitor feedback into "keep doing / fix next".
+**The AI reads; Noor answers.**
+
+## What it does
+
+| Workflow (Annex C) | How | Where it runs |
+| --- | --- | --- |
+| Responding to enquiries across languages | Detects language (en/fr/sw/other) and intent (9 fixed intents); renders the matching template in the visitor's language, shows Noor the meaning in Kiswahili; she copies/sends, sends a holding reply, writes her own, or dismisses | On the phone, offline · and over **SMS** for the basic phone |
+| Managing a booking | Ledger with pending/confirmed/cancelled/completed; confirmation, reminder, cancellation and follow-up messages from templates | On the phone, offline |
+| Learning from visitor feedback | Splits a review into clauses, tags each with an aspect (8 fixed) and polarity; aggregates into keep-doing / fix-next with an explicit "x of y parts were clear enough to count" | On the phone, offline |
+| Becoming discoverable | Listing text in en/fr/sw generated from the farm profile only | On the phone, offline |
+
+### The brief's rules
+
+- **Runs on a device the user already has.** SMS channel for Noor's basic phone (she receives one Kiswahili SMS per enquiry and replies `1`, `2` or in her own words). PWA for the weekend smartphone, no app store.
+- **Core feature works offline.** Models and templates (2.1 MB) are cached on first open; reading messages and feedback never needs a signal. Records queue and sync when a signal returns.
+- **Model files small enough to side-load.** Four JSON models, 2.1 MB uncompressed (~1 MB gzipped), no WebAssembly, no GPU.
+- **Local language.** Operator side in Kiswahili. Visitors answered in English, French or Kiswahili; other languages are flagged, not guessed. How it would fare in a less-supported language: see D-013 in [docs/DECISIONS.md](docs/DECISIONS.md).
+
+### Guardrails (pass/fail)
+
+- A person makes the final call: nothing reaches a visitor until Noor presses a button or replies by SMS.
+- Below 65 % confidence the tool says "not sure" and suggests nothing. The `other` intent is never auto-answered.
+- Every visitor-facing sentence comes from a fixed template list ([shared/templates/replies.json](shared/templates/replies.json), published at `GET /api/inference/replies`). The tool cannot invent a price or a road.
+- Confidence and the full ranked score list are always on screen.
+
+### Why AI and not SMS, a spreadsheet or a search
+
+An SMS can carry the message; it cannot read "Pouvez-vous nous envoyer la position GPS ?" and tell Noor it is a
+directions question. A spreadsheet cannot tell *price* from *cancel* in French. A search needs Noor to know what to
+search for. Nine intents in three languages, with a confidence Noor can see, is exactly the size of problem a
+small classifier solves and a rule list does not.
+
+## Honest numbers
+
+Hold-out on our own synthetic seed data (by pattern), threshold 0.65. Full detail in [docs/MODEL_CARD.md](docs/MODEL_CARD.md).
+
+| Model | Accuracy | Answers (coverage) | Right when answering | Size |
+| --- | --- | --- | --- | --- |
+| intent | 0.80 | 69 % | 0.92 | 881 KB |
+| langid | 0.99 | 97 % | 1.00 | 184 KB |
+| aspect | 0.67 | 58 % | 0.84 | 950 KB |
+| sentiment | 0.69 | 74 % | 0.72 | 139 KB |
+
+All training data is synthetic (no real visitor traffic, no code-switching, team-written Swahili). The model card and
+`GET /api/datasets` state what the data does not cover. The TypeScript and Python runtimes are proven identical by
+`backend/tests/test_parity.py`.
+
+## Run it
+
+Windows: `start.bat` · macOS/Linux: `./start.sh` (installs, then runs API on :8000 and app on :5173).
+
+Manual:
+
+```bash
+# backend
+cd backend && python -m venv .venv && .venv/Scripts/activate   # or source .venv/bin/activate
+pip install -r requirements-dev.txt && cp .env.example .env
+uvicorn app.main:app --reload --port 8000      # OpenAPI UI: http://localhost:8000/docs
+pytest                                          # 20 tests
+
+# frontend (another terminal)
+cd frontend && npm install && npm run dev       # http://localhost:5173
+```
+
+Single container (what a Hugging Face Space or a Raspberry Pi at the cooperative runs):
+
+```bash
+docker build -t karibu . && docker run -p 7860:7860 -v karibu-data:/data karibu
+docker buildx build --platform linux/arm64 -t karibu:pi .      # edge-box image
+```
+
+Retrain the models (needs scikit-learn): `cd backend && pip install -r ml/requirements.txt && python -m ml.train`.
+This rewrites `shared/models/*.json` and `shared/models/METRICS.md`; the frontend copies `shared/` on every `dev`/`build`.
+
+### Try the SMS channel
+
+```bash
+curl -X POST localhost:8000/api/sms/inbound -d "from=+447700900123" -d "text=How much is the coffee tour for 3?"
+# -> Noor receives: "KARIBU: Ujumbe mpya kutoka +447700900123 (Kiingereza). Anauliza bei. ... Jibu 1 = tuma jibu la kawaida ..."
+curl -X POST localhost:8000/api/sms/operator -d "from=+000000000000" -d "text=1"
+# -> visitor receives the English price template; Noor receives "KARIBU: Jibu limetumwa"
+curl localhost:8000/api/sms/outbox
+```
+
+Set `SMS_PROVIDER=africastalking` (or `twilio`) and the credentials in `.env` to send for real; `console` logs only.
 
 ## Layout
 
 ```
-backend/            FastAPI app
-  app/main.py       app factory, CORS, router wiring (all routes under /api)
-  app/config.py     settings from .env
-  app/schemas.py    Pydantic models (Sector, InferenceRequest/Response, Sync, Dataset)
-  app/routers/      health, inference, sync (store-and-forward), datasets
-  app/services/     model.py (adapter + stub), guardrails.py (human-in-the-loop)
-  tests/            pytest suite
-frontend/           Vite + React + TS
-  src/api/client.ts typed API client
-  src/i18n/         en.json, sw.json, tiny i18n hook
-  src/lib/          offlineQueue.ts
-  src/components/   SectorPicker, ResultCard, OnlineBadge, LanguageSwitcher
-  src/pages/Home.tsx
-  public/sw.js      offline app-shell service worker
-docs/CHALLENGE_BRIEF.md   rules, judging weights, deliverables, datasets from the PDF
-docs/DECISIONS.md         decision log (ADR style): why the stack, guardrails, offline, deployment look this way
-docs/FEATURES.md          feature register with status, mapped to brief rules and decisions
-docker-compose.yml
+shared/                 ONE source of truth read by both runtimes
+  models/*.json         four tiny models + METRICS.md (generated by backend/ml/train.py)
+  templates/*.json      every sentence the tool may say to a visitor (en/fr/sw), operator labels, listing
+backend/
+  app/services/tinymodel.py   dependency-free model runtime (mirrors frontend/src/lib/tinyModel.ts)
+  app/services/model.py       hub: analyse_enquiry, analyse_feedback
+  app/services/replies.py     template rendering (fixed list of answers)
+  app/services/store.py       SQLite (sync, enquiries, bookings, feedback, profile, SMS log)
+  app/services/sms.py         gateway: console | africastalking | twilio
+  app/routers/                health, inference, enquiries, feedback, bookings, profile, sms, sync, datasets
+  ml/                         featurizer, seed data, trainer, parity probe
+  tests/                      20 tests incl. TS/Python parity
+frontend/
+  src/lib/tinyModel.ts        browser model runtime
+  src/lib/models.ts           load artifacts, analyse on device, render templates, summarise feedback
+  src/lib/store.ts            offline state + sync queue
+  src/pages/                  Inbox, Bookings, Feedback, Listing, Sms, About
+  public/sw.js                caches app shell + /shared for offline use
+docs/
+  CHALLENGE_BRIEF.md  DECISIONS.md  FEATURES.md  MODEL_CARD.md  DATA_HANDLING.md  VIDEO_SCRIPT.md
+Dockerfile              single image: Space / laptop / Raspberry Pi
 ```
 
-## Run it
+## What localising AI development means to us
 
-### Quickest: one script per platform
-
-Requires Python 3.11+ and Node 18+ installed. The script creates the backend virtualenv, installs
-Python and npm packages, copies `backend/.env.example` to `backend/.env` (if missing), then starts both
-servers and opens http://localhost:5173 in your browser. Safe to re-run; installs are skipped when
-already up to date.
-
-Windows (double-click or run from a terminal):
-
-```bat
-start.bat          :: install anything missing, then run (two console windows: backend :8000, frontend :5173)
-start.bat setup    :: install only
-```
-
-macOS / Linux:
-
-```bash
-chmod +x start.sh   # once
-./start.sh          # install anything missing, then run both servers; Ctrl+C stops both
-./start.sh setup    # install only
-```
-
-### Manual
-
-Backend (Python 3.11+):
-
-```bash
-cd backend
-python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
-pip install -r requirements-dev.txt
-cp .env.example .env
-uvicorn app.main:app --reload --port 8000
-# OpenAPI UI: http://localhost:8000/docs
-pytest
-```
-
-Frontend (Node 18+):
-
-```bash
-cd frontend
-npm install
-npm run dev
-# http://localhost:5173  (Vite proxies /api -> http://localhost:8000)
-```
-
-Or both with Docker:
-
-```bash
-docker compose up --build
-# frontend http://localhost:5173, backend http://localhost:8000
-```
-
-## Try the guardrail
-
-```bash
-curl -X POST http://localhost:8000/api/inference \
-  -H "Content-Type: application/json" \
-  -d '{"sector":"agriculture","text":"orange rust spots on majani","language":"sw"}'
-# -> decision: "answer", label: "coffee_leaf_rust", confidence ~0.9
-
-curl -X POST http://localhost:8000/api/inference \
-  -H "Content-Type: application/json" \
-  -d '{"sector":"health","text":"something unclear","language":"sw"}'
-# -> decision: "ask_a_person", explanation in Swahili
-```
-
-## Where to plug in your work
-
-1. **Model**: implement the `SmallModel` protocol in `backend/app/services/model.py` and register it in `get_model`.
-   For true offline inference, run the model in the browser instead (ONNX Runtime Web, TF.js, WebLLM) and keep
-   the API for sync only. The `TODO` in `frontend/src/pages/Home.tsx` marks the spot.
-2. **Language**: add `frontend/src/i18n/<code>.json`, register it in `i18n/index.ts`, and add the fallback message
-   in `guardrails.py`. Rename Swahili to the language you actually demo in.
-3. **Datasets**: fill `backend/app/routers/datasets.py` with what you really trained on, including license and gaps.
-4. **Persistence**: `routers/sync.py` is in-memory. Replace with SQLite/Postgres or forward to DHIS2 etc.
-5. **Submission**: see the deliverables checklist in `docs/CHALLENGE_BRIEF.md`.
+Not a bigger model that happens to speak Swahili. A small one shaped by Noor's constraints: her phone, her signal, her
+language, her right to decide. The trade-off we chose, and say out loud: templates instead of translation means Noor
+cannot yet type a free reply and have it translated. That is the next step, on the edge box, with NLLB-200 (F-34).

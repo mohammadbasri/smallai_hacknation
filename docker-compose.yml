@@ -1,18 +1,20 @@
+# Dev convenience. Production / edge box / Hugging Face Space use the single root Dockerfile instead.
 services:
-  backend:
-    build: ./backend
+  karibu:
+    build: .
     ports:
-      - "8000:8000"
+      - "7860:7860"
     environment:
-      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
       CONFIDENCE_THRESHOLD: "0.65"
       DEFAULT_LANGUAGE: sw
+      SMS_PROVIDER: console
+      # SMS_PROVIDER: africastalking
+      # AT_USERNAME: sandbox
+      # AT_API_KEY: ...
+      # SMS_OPERATOR_NUMBER: "+2547..."
+      # SMS_SERVICE_NUMBER: "+2547..."
     volumes:
-      - ./backend/app:/app/app
+      - karibu-data:/data
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "5173:80"
-    depends_on:
-      - backend
+volumes:
+  karibu-data:

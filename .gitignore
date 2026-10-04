@@ -228,3 +228,8 @@ frontend/.vite/
 # Local model files (keep repo small; document how to download them)
 backend/models/
 *.tsbuildinfo
+
+# generated: copied from /shared by frontend/scripts/copy-shared.mjs
+frontend/public/shared/
+# local SQLite data
+backend/data/

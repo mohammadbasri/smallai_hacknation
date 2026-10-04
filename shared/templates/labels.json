@@ -1,0 +1,68 @@
+{
+  "version": "1.0.0",
+  "note": "Operator-facing labels in Noor's languages (sw = demo language, en = fallback). Visitor-facing text lives in replies.json.",
+  "intents": {
+    "price": { "en": "Asking about the price", "sw": "Anauliza bei" },
+    "booking": { "en": "Wants to book a visit", "sw": "Anataka kuweka nafasi" },
+    "availability": { "en": "Asking if you are open / have space", "sw": "Anauliza kama mko wazi / kuna nafasi" },
+    "directions": { "en": "Asking for directions", "sw": "Anauliza njia ya kufika" },
+    "whats_included": { "en": "Asking what the tour includes", "sw": "Anauliza ziara inajumuisha nini" },
+    "dietary_accessibility": { "en": "Asking about food needs or accessibility", "sw": "Anauliza kuhusu chakula maalum au ufikiaji" },
+    "cancel_change": { "en": "Wants to cancel or change a booking", "sw": "Anataka kufuta au kubadilisha nafasi" },
+    "thanks_feedback": { "en": "Saying thank you / giving feedback", "sw": "Anashukuru / anatoa maoni" },
+    "other": { "en": "Not a visitor enquiry (or unclear)", "sw": "Si swali la mgeni (au haieleweki)" }
+  },
+  "aspects": {
+    "coffee_tasting": { "en": "Coffee tasting and roasting", "sw": "Kuonja na kukaanga kahawa" },
+    "farm_walk": { "en": "Farm walk", "sw": "Matembezi shambani" },
+    "food": { "en": "Food and drinks", "sw": "Chakula na vinywaji" },
+    "guide_translation": { "en": "Guide and translation", "sw": "Mwongozaji na tafsiri" },
+    "price_value": { "en": "Price and value", "sw": "Bei na thamani" },
+    "access_road": { "en": "Getting there (road, directions)", "sw": "Kufika (barabara, maelekezo)" },
+    "hospitality": { "en": "Welcome and hospitality", "sw": "Mapokezi na ukarimu" },
+    "booking_communication": { "en": "Booking and communication", "sw": "Kuweka nafasi na mawasiliano" },
+    "other": { "en": "General / other", "sw": "Jumla / mengine" }
+  },
+  "sentiment": {
+    "positive": { "en": "liked", "sw": "walipenda" },
+    "negative": { "en": "did not like", "sw": "hawakupenda" }
+  },
+  "languages": {
+    "en": { "en": "English", "sw": "Kiingereza" },
+    "fr": { "en": "French", "sw": "Kifaransa" },
+    "sw": { "en": "Kiswahili", "sw": "Kiswahili" },
+    "other": { "en": "another language", "sw": "lugha nyingine" }
+  },
+  "operator_summary": {
+    "answer": {
+      "en": "Visitor writes in {language}: {intent_label}.",
+      "sw": "Mgeni ameandika kwa {language}: {intent_label}."
+    },
+    "ask_a_person": {
+      "en": "Not sure what the visitor wants (confidence {pct}%). Please read the message and reply yourself, or send the holding reply.",
+      "sw": "Sina uhakika mgeni anataka nini (uhakika {pct}%). Tafadhali soma ujumbe na ujibu mwenyewe, au tuma jibu la kusubiri."
+    },
+    "unsupported_language": {
+      "en": "The message is in a language this tool does not support. You can send the 'please write in English, French or Kiswahili' reply, or ask the guide.",
+      "sw": "Ujumbe uko katika lugha ambayo chombo hiki hakitumii. Unaweza kutuma jibu la 'tafadhali andika kwa Kiingereza, Kifaransa au Kiswahili', au muulize mwongozaji."
+    }
+  },
+  "sms": {
+    "new_enquiry": {
+      "sw": "KARIBU: Ujumbe mpya kutoka {contact} ({language}). {intent_label}. \"{excerpt}\" Jibu 1 = tuma jibu la kawaida, 2 = tuma 'nitajibu baadaye', au andika jibu lako.",
+      "en": "KARIBU: New message from {contact} ({language}). {intent_label}. \"{excerpt}\" Reply 1 = send standard reply, 2 = send holding reply, or type your own reply."
+    },
+    "unsure_enquiry": {
+      "sw": "KARIBU: Ujumbe mpya kutoka {contact} ({language}). Sina uhakika anataka nini ({pct}%). \"{excerpt}\" Jibu 2 = tuma 'nitajibu baadaye', au andika jibu lako.",
+      "en": "KARIBU: New message from {contact} ({language}). Not sure what they want ({pct}%). \"{excerpt}\" Reply 2 = send holding reply, or type your own reply."
+    },
+    "sent_ok": {
+      "sw": "KARIBU: Jibu limetumwa kwa {contact}.",
+      "en": "KARIBU: Reply sent to {contact}."
+    },
+    "nothing_pending": {
+      "sw": "KARIBU: Hakuna ujumbe unaosubiri jibu.",
+      "en": "KARIBU: No message is waiting for a reply."
+    }
+  }
+}

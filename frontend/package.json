@@ -1,10 +1,13 @@
 {
-  "name": "smallai-frontend",
+  "name": "karibu-frontend",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "copy-shared": "node scripts/copy-shared.mjs",
+    "predev": "node scripts/copy-shared.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/copy-shared.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit"

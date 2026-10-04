@@ -1,39 +1,52 @@
-from fastapi import APIRouter, Depends
+"""Pure inference endpoints (no persistence). The app uses these when online for parity checks;
+offline it runs the same models in the browser."""
+from fastapi import APIRouter, HTTPException
 
-from app.config import Settings, get_settings
-from app.schemas import Decision, InferenceRequest, InferenceResponse, Sector
-from app.services import guardrails
-from app.services.model import get_model
+from app.schemas import EnquiryAnalysis, EnquiryRequest, FeedbackAnalysis, FeedbackRequest
+from app.services.model import get_hub
+from app.services.replies import get_templates
 
 router = APIRouter(prefix="/inference", tags=["inference"])
 
 
-@router.post("", response_model=InferenceResponse)
-def infer(req: InferenceRequest, settings: Settings = Depends(get_settings)) -> InferenceResponse:
-    model = get_model(req.sector)
-    pred = model.predict(req.text, req.language)
-    decision = guardrails.decide(pred.confidence, settings.confidence_threshold)
+@router.post("/enquiry", response_model=EnquiryAnalysis)
+def analyse_enquiry(req: EnquiryRequest) -> EnquiryAnalysis:
+    return get_hub().analyse_enquiry(req.text, req.operator_language)
 
-    explanation = pred.explanation
-    label = pred.label
-    if decision is Decision.ask_a_person:
-        explanation = guardrails.ask_a_person_message(req.language)
-        label = None
 
-    return InferenceResponse(
-        decision=decision,
-        label=label,
-        confidence=pred.confidence,
-        explanation=explanation,
-        language=req.language,
-        model_name=model.name,
-        model_version=model.version,
-        sources=pred.sources,
+@router.post("/feedback", response_model=FeedbackAnalysis)
+def analyse_feedback(req: FeedbackRequest) -> FeedbackAnalysis:
+    hub = get_hub()
+    lang, clauses = hub.analyse_feedback(req.text, req.language)
+    confident = sum(1 for c in clauses if c.aspect and c.sentiment)
+    return FeedbackAnalysis(
+        id="preview",
+        language=lang,
+        clauses=clauses,
+        n_confident=confident,
+        n_unsure=len(clauses) - confident,
+        model_name=hub.name,
+        model_version=hub.version,
     )
 
 
-@router.get("/labels/{sector}")
-def labels(sector: Sector):
-    """The fixed list of answers the tool is allowed to give for a sector."""
-    model = get_model(sector)
-    return {"sector": sector, "labels": model.labels}
+@router.get("/models")
+def models():
+    """What is loaded, how big it is, and how it scored on hold-out. Judges can check 'small' and 'honest' here."""
+    hub = get_hub()
+    return {"threshold": hub.threshold, "models": hub.summaries(), "templates_version": get_templates().version}
+
+
+@router.get("/labels/{model}")
+def labels(model: str):
+    """The fixed list of answers a model may give."""
+    try:
+        return {"model": model, "labels": get_hub().labels(model)}
+    except KeyError:
+        raise HTTPException(404, f"unknown model '{model}'")
+
+
+@router.get("/replies")
+def replies():
+    """The complete, auditable set of visitor-facing texts (templates with slots)."""
+    return get_templates().all_visitor_texts()

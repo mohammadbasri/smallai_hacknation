@@ -10,7 +10,7 @@ SETUP_ONLY=""
 [[ "${1:-}" == "setup" ]] && SETUP_ONLY=1
 
 echo
-echo "=== Small AI for Development (macOS / Linux) ==="
+echo "=== Karibu - Small AI for farm tours (macOS / Linux) ==="
 echo
 
 # ---------- Locate Python 3.11+ ----------

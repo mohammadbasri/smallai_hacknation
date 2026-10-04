@@ -1,10 +1,11 @@
 /** Store-and-forward queue: save now, send later (see brief glossary).
- *  Records live in localStorage until the backend acknowledges them.
+ *  Records live in localStorage until the backend acknowledges them. Each record is also applied to the
+ *  backend's own tables (see backend/app/routers/sync.py), so the edge box / dashboard mirrors the phone.
  *  Swap for IndexedDB if you need to queue images or audio. */
-import { api, type QueuedRecord, type Sector } from "../api/client";
+import { api, type QueuedRecord, type RecordKind } from "../api/client";
 
-const KEY = "smallai.queue";
-const CLIENT_KEY = "smallai.client_id";
+const KEY = "karibu.queue";
+const CLIENT_KEY = "karibu.client_id";
 
 function read(): QueuedRecord[] {
   try {
@@ -35,15 +36,14 @@ export function getClientId(): string {
   }
 }
 
-export function enqueue(sector: Sector, payload: Record<string, unknown>, language: string): QueuedRecord {
-  const rec: QueuedRecord = {
-    id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-    sector,
-    payload,
-    captured_at: new Date().toISOString(),
-    language,
-  };
-  write([...read(), rec]);
+export function newId(): string {
+  return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+/** Queue a record. Re-queuing the same id replaces the pending copy (latest state wins). */
+export function enqueue(kind: RecordKind, id: string, payload: Record<string, unknown>, language: string): QueuedRecord {
+  const rec: QueuedRecord = { id, kind, payload, captured_at: new Date().toISOString(), language };
+  write([...read().filter((r) => r.id !== id), rec]);
   return rec;
 }
 
