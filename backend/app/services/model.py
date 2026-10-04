@@ -33,9 +33,9 @@ class SmallModel(Protocol):
 
 _SECTOR_LABELS: dict[Sector, dict[str, list[str]]] = {
     Sector.tourism: {
-        "booking_request": ["book", "visit", "tour", "ziara", "come"],
-        "price_enquiry": ["price", "cost", "bei", "how much"],
-        "directions": ["where", "directions", "wapi", "road"],
+        "booking_request": ["book", "visit", "tour", "yatra", "ghoomna", "बुक", "यात्रा", "come"],
+        "price_enquiry": ["price", "cost", "daam", "kimat", "कीमत", "दाम", "कितना", "how much"],
+        "directions": ["where", "directions", "kahan", "kaise", "कहाँ", "रास्ता", "road"],
     },
 }
 

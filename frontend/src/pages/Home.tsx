@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, type FormEvent } from "react";
 import { api, type InferenceResponse, type Sector } from "../api/client";
 import { ResultCard } from "../components/ResultCard";
 import { useOnline } from "../hooks/useOnline";
+import { VoiceInput } from "../components/VoiceInput";
 import { OfflineModel } from "../components/OfflineModel";
 import { LangContext, useT } from "../i18n";
 import { askLocal, llmReady } from "../lib/llm";
@@ -68,6 +69,7 @@ export function Home() {
         <div>
           <label htmlFor="input">{t("input_label")}</label>
           <textarea id="input" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("input_placeholder")} />
+          <VoiceInput lang={lang} online={online} onText={(s) => setText((prev) => (prev ? `${prev} ${s}` : s))} />
         </div>
         <div className="row" style={{ marginTop: 12 }}>
           <button type="submit" disabled={busy || !text.trim()}>

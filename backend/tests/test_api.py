@@ -26,13 +26,13 @@ def test_inference_confident_answer():
 def test_inference_defers_to_human_when_unsure():
     r = client.post(
         "/api/inference",
-        json={"sector": "tourism", "text": "zzzz nothing matches", "language": "sw"},
+        json={"sector": "tourism", "text": "zzzz nothing matches", "language": "hi"},
     )
     assert r.status_code == 200
     body = r.json()
     assert body["decision"] == "ask_a_person"
     assert body["label"] is None
-    assert "uhakika" in body["explanation"]  # Swahili fallback message
+    assert "पक्का नहीं" in body["explanation"]  # Hindi fallback message
 
 
 def test_sync_is_idempotent():

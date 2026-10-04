@@ -1,17 +1,17 @@
 /** Tiny dependency-free i18n. Add a language by adding a JSON file and registering it here.
- *  The brief requires at least one interaction in a named local language. Swahili (sw) is a placeholder. */
+ *  The brief requires at least one interaction in a named local language. Hindi (hi). */
 import { createContext, useContext } from "react";
 import en from "./en.json";
-import sw from "./sw.json";
+import hi from "./hi.json";
 
-export type Lang = "en" | "sw";
+export type Lang = "en" | "hi";
 export type Dict = typeof en;
 
-export const DICTS: Record<Lang, Dict> = { en, sw };
-export const LANG_NAMES: Record<Lang, string> = { en: "English", sw: "Kiswahili" };
+export const DICTS: Record<Lang, Dict> = { en, hi };
+export const LANG_NAMES: Record<Lang, string> = { en: "English", hi: "हिन्दी" };
 
 export const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
-  lang: "sw",
+  lang: "hi",
   setLang: () => {},
 });
 
@@ -28,11 +28,11 @@ export function useT() {
 export function loadLang(): Lang {
   try {
     const saved = localStorage.getItem("lang");
-    if (saved === "en" || saved === "sw") return saved;
+    if (saved === "en" || saved === "hi") return saved;
   } catch {
     /* storage unavailable */
   }
-  return "sw";
+  return "hi";
 }
 
 export function saveLang(l: Lang) {

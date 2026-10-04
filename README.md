@@ -9,7 +9,7 @@ What the boilerplate already does for you:
 | Brief requirement | Where it lives |
 | --- | --- |
 | Core feature works offline | `frontend/public/sw.js` caches the app shell; `src/lib/offlineQueue.ts` is store-and-forward |
-| Local-language interaction (name the language) | `frontend/src/i18n/` (English + Swahili placeholder), `backend/app/services/guardrails.py` fallback messages |
+| Local-language interaction (name the language) | `frontend/src/i18n/` (English + Hindi), `backend/app/services/guardrails.py` fallback messages |
 | Human in the loop, no guessing | `backend/app/services/guardrails.py` returns `ask_a_person` below `CONFIDENCE_THRESHOLD`; `ResultCard.tsx` always shows confidence |
 | Fixed list of answers | `backend/app/services/model.py` labels per sector, exposed at `GET /api/inference/labels/{sector}` |
 | Cite datasets and their gaps | `backend/app/routers/datasets.py` (`coverage_gaps` is a required field) |
@@ -27,7 +27,7 @@ backend/            FastAPI app
   tests/            pytest suite
 frontend/           Vite + React + TS
   src/api/client.ts typed API client
-  src/i18n/         en.json, sw.json, tiny i18n hook
+  src/i18n/         en.json, hi.json, tiny i18n hook
   src/lib/          offlineQueue.ts
   src/components/   ResultCard, OnlineBadge, LanguageSwitcher
   src/pages/Home.tsx
@@ -103,8 +103,8 @@ curl -X POST http://localhost:8000/api/inference \
 
 curl -X POST http://localhost:8000/api/inference \
   -H "Content-Type: application/json" \
-  -d '{"sector":"tourism","text":"something unclear","language":"sw"}'
-# -> decision: "ask_a_person", explanation in Swahili
+  -d '{"sector":"tourism","text":"something unclear","language":"hi"}'
+# -> decision: "ask_a_person", explanation in Hindi
 ```
 
 ## Where to plug in your work
@@ -113,7 +113,7 @@ curl -X POST http://localhost:8000/api/inference \
    For true offline inference, run the model in the browser instead (ONNX Runtime Web, TF.js, WebLLM) and keep
    the API for sync only. The `TODO` in `frontend/src/pages/Home.tsx` marks the spot.
 2. **Language**: add `frontend/src/i18n/<code>.json`, register it in `i18n/index.ts`, and add the fallback message
-   in `guardrails.py`. Rename Swahili to the language you actually demo in.
+   in `guardrails.py`. The demo language is Hindi.
 3. **Datasets**: fill `backend/app/routers/datasets.py` with what you really trained on, including license and gaps.
 4. **Persistence**: `routers/sync.py` is in-memory. Replace with SQLite/Postgres or forward to DHIS2 etc.
 5. **Submission**: see the deliverables checklist in `docs/CHALLENGE_BRIEF.md`.

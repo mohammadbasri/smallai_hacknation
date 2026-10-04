@@ -16,6 +16,6 @@ def decide(confidence: float, threshold: float) -> Decision:
 def ask_a_person_message(language: str) -> str:
     messages = {
         "en": "Not sure. Please ask a person (a tour guide or tourism officer).",
-        "sw": "Sina uhakika. Tafadhali muulize mtu (kiongozi wa watalii au afisa utalii).",
+        "hi": "पक्का नहीं है। कृपया किसी व्यक्ति (टूर गाइड या पर्यटन अधिकारी) से पूछें।",
     }
     return messages.get(language, messages["en"])

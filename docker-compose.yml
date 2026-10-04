@@ -6,7 +6,7 @@ services:
     environment:
       CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
       CONFIDENCE_THRESHOLD: "0.65"
-      DEFAULT_LANGUAGE: sw
+      DEFAULT_LANGUAGE: hi
     volumes:
       - ./backend/app:/app/app
 

@@ -16,7 +16,7 @@ export default defineConfig({
   },
   build: {
     // Keep the bundle small: Noor buys 3G data bundles.
-    target: "es2019",
+    target: "es2022",
     sourcemap: false,
   },
 });

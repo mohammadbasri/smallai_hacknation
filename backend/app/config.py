@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     # Guardrail: below this the tool must defer to a human instead of guessing.
     confidence_threshold: float = 0.65
 
-    # Local language used in the demo (ISO 639-1). Swahili is a placeholder.
-    default_language: str = "sw"
+    # Local language used in the demo (ISO 639-1). Hindi.
+    default_language: str = "hi"
 
     model_dir: str = "./models"
 

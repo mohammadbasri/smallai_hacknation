@@ -20,7 +20,7 @@ class Decision(str, Enum):
 class InferenceRequest(BaseModel):
     sector: Sector
     text: str = Field(..., min_length=1, max_length=2000, description="User input (text or transcribed voice)")
-    language: str = Field("sw", min_length=2, max_length=8, description="ISO 639-1 code of the input language")
+    language: str = Field("hi", min_length=2, max_length=8, description="ISO 639-1 code of the input language")
     client_id: str | None = Field(None, description="Opaque device/user id for store-and-forward dedupe")
 
 
@@ -42,7 +42,7 @@ class QueuedRecord(BaseModel):
     sector: Sector
     payload: dict
     captured_at: datetime
-    language: str = "sw"
+    language: str = "hi"
 
 
 class SyncRequest(BaseModel):
